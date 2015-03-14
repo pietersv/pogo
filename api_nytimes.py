@@ -1,4 +1,3 @@
-from nytimesarticle import articleAPI
 import requests
 import lxml.html as lh
 import re
@@ -47,13 +46,8 @@ def searchTopic(argv):
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
 	searchTopic('Apple Watch')
-=======
 	str_input = ''
 	for x in range(len(sys.argv) - 1):
 		str_input = str_input + sys.argv[x + 1] + ' '
-	print str_input
-	searchTopic(sys.argv[1:])
-
->>>>>>> 6c58600595c3bfce3c83508f06d9b63bde923515
+	searchTopic(str_input)
