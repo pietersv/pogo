@@ -36,11 +36,11 @@ def searchTopic(topic):
 	for count, art in enumerate(articles_content):
 		regex = re.compile('[^a-zA-Z]')
 		articles_content[count] = regex.sub(' ', art)
-	#with open('%s data.csv' % topic, 'wb') as output_file:
-		#wr = csv.writer(output_file, quoting=csv.QUOTE_ALL)
-		#wr.writerow(articles_content)
-	#print articles_content
-	return articles_content
+	with open('%s data.csv' % topic, 'wb') as output_file:
+		wr = csv.writer(output_file, quoting=csv.QUOTE_ALL)
+		wr.writerow(articles_content)
+	print articles_content
+
 
 
 
