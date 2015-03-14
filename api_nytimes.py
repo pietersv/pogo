@@ -2,9 +2,9 @@ from nytimesarticle import articleAPI
 import requests
 import lxml.html as lh
 import re
-import csv
+import sys
 
-def searchTopic(topic):
+def searchTopic(argv):
 	f = open('secret', 'r')
 	for line in f:
 		if line.find('NYTIMES_ARTICLE') != -1:
@@ -47,4 +47,9 @@ def searchTopic(topic):
 
 
 if __name__ == '__main__':
-	searchTopic('Apple Watch')
+	str_input = ''
+	for x in range(len(sys.argv) - 1):
+		str_input = str_input + sys.argv[x + 1] + ' '
+	print str_input
+	searchTopic(sys.argv[1:])
+
