@@ -1,23 +1,13 @@
-<<<<<<< HEAD
+
 library(indicoio)
 library(jsonlite)
-
-=======
-library(jsonlite)
->>>>>>> origin/master
 
 ## Read secret keys from a local file 
 myProp <- read.table(secretLoc,header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
 BEST_BUY_API_KEY <- myProp["BEST_BUY_API_KEY",1]
 BEST_BUY_API_APPLICATION <- myProp["BEST_BUY_API_APPLICATION",1]
 
-<<<<<<< HEAD
-#url1 <- paste(
-#  "http://api.remix.bestbuy.com/v1/products%28longDescription=iPhone*%29?show=sku,name&pageSize=100&page=5&format=json&apiKey=", BEST_BUY_API_KEY,sep="")
-
-=======
 ## Query Best Buy API for products that match a specified query string
->>>>>>> origin/master
 query <- "iPhone"
 url_products <- paste(
   "http://api.remix.bestbuy.com/v1/products",
@@ -29,13 +19,8 @@ url_products <- paste(
   "&apiKey=",BEST_BUY_API_KEY,
   sep="") 
 
-<<<<<<< HEAD
 products <- jsonlite::fromJSON(url_products)   
-=======
-url_products
 
-products <- fromJSON(url_products)   
->>>>>>> origin/master
 #products$products$sku
 
 url_reviews <- paste(
@@ -49,7 +34,6 @@ url_reviews <- paste(
   "&page=","1",
   sep="")
 
-<<<<<<< HEAD
 reviews <- jsonlite::fromJSON(url_reviews)
 
 print (length(names(reviews)))
@@ -69,7 +53,4 @@ boxplot(sentiment ~ rating, data= reviews$reviews, xlab = "rating", ylab = "sent
 
 
 
-=======
-reviews <- fromJSON(url_reviews)
->>>>>>> origin/master
 
