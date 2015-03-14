@@ -7,25 +7,48 @@ library(SnowballC)
 library(indicoio)
 library(jsonlite)
 
+setwd("/Users/liuchang/Documents/STUDY/Projects/Pogo")
+
 
 get_twitter<-function(input_str) {
   Sys.sleep(0.5)
   ## Read secret keys from a local file
   myProp <- read.table(secretLoc,header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
-  TWITTER_API_KEY <- myProp["TWITTER_API_KEY",1]
-  TWITTER_API_SECRET <- myProp["TWITTER_API_SECRET",1]
-  TWITTER_ACCESS_TOKEN <- myProp["TWITTER_ACCESS_TOKEN",1]
-  TWITTER_ACCESS_SECRET <- myProp["TWITTER_ACCESS_SECRET",1]
+#   TWITTER_API_KEY <- myProp["TWITTER_API_KEY",1]
+#   TWITTER_API_SECRET <- myProp["TWITTER_API_SECRET",1]
+#   TWITTER_ACCESS_TOKEN <- myProp["TWITTER_ACCESS_TOKEN",1]
+#   TWITTER_ACCESS_SECRET <- myProp["TWITTER_ACCESS_SECRET",1]
+#   
+  api_key <- "GO2w8H7fsU6prfRIc6vG49aec"
+  
+  api_secret <- "PLB969zdMsPll3lzUpBG8UIC6a99JXrSqxUP8fWJ8lUgjvzThV"
+  
+  access_token <- "3091565165-1LOxNVORx75ZnfgyZNUdq7OIzsHzo8OLZ8QaP5q"
+  
+  access_token_secret <- "iOlmQoEJti1I5KiFH9MGDCt5mnJrClzEsEBZSdCcMPpvs"
+  
   
   ## Authenticate with Twitter
-  setup_twitter_oauth(TWITTER_API_KEY,TWITTER_API_SECRET,TWITTER_ACCESS_TOKEN,TWITTER_ACCESS_SECRET)
-  
+  #setup_twitter_oauth(TWITTER_API_KEY,TWITTER_API_SECRET,TWITTER_ACCESS_TOKEN,TWITTER_ACCESS_SECRET)
+  setup_twitter_oauth(api_key,api_secret,access_token,access_token_secret)
+                      
   ## Search Twitter
   r_stats <- searchTwitter(input_str, n=100, lang="en")
+  r_stats_text <- sapply(r_stats, function(x) x$getText())
+  r_stats_text_corpus <- Corpus(VectorSource(r_stats_text))
+  
+  r_stats_text_corpus <- tm_map(r_stats_text_corpus, stripWhitespace, lazy=TRUE, mc.cores=1)
+  r_stats_text_corpus <- tm_map(r_stats_text_corpus, content_transformer(tolower), lazy=TRUE, mc.cores=1)
+  r_stats_text_corpus <- tm_map(r_stats_text_corpus, removePunctuation, lazy=TRUE, mc.cores=1)
+  r_stats_text_corpus <- tm_map(r_stats_text_corpus, function(x)removeWords(x,stopwords()), lazy=TRUE, mc.cores=1)
+  r_stats_text_corpus <- tm_map(r_stats_text_corpus, stemDocument, lazy=TRUE, mc.cores=1)
+  
   return(r_stats)
 }
 
-
+# twitterDat <- reactive({
+#   get_twitter(input$product)
+# })
 
 # define a function to display wordcloud
 display_wordcloud<-function(get_twitter) {
@@ -39,7 +62,7 @@ display_wordcloud<-function(get_twitter) {
   #filter common words
   skipWords <- c("and", "the", "for", "are", "but", "or", "nor", "yet", "so",
                  "if", "a", "an", "from", "want", "how")
-  inds <- 1:200
+  inds <- 1:min(200, length(d$word))
   inds <- which(!(inds %in% which(d$word %in% skipWords)))
   #filter usernames
   inds <- inds[which(!(inds %in% grep("@", d$word)))]
@@ -118,8 +141,29 @@ BestBuy_boxplot<-function(query) {
 
 
 
+# define a function generating a NYT sentiments histogram
+get_NYTdata<-function(qString) {
+  nyArts <- system(paste("/Users/liuchang/anaconda/bin/python api_nytimes.py ",
+                         qString, sep=""), intern = TRUE)
+}
+
+# generate a histogram of NYT sentiments
+NYT_histogram<-function(nyArts) {
+  nySent <- rep(NA, length(nyArts))
+  for(i in 1:length(nyArts)) {
+    nySent[i] <- sentiment(nyArts[i])
+  }
+  
+  hist(nySent, main = "New York Times Article Sentiments")
+  abline(v = mean(nySent), col = "red")
+}
+
 # Define a server for the Shiny app
 shinyServer(function(input, output) {
+  
+  twitterDat <- reactive({
+    get_twitter(input$product)
+  })
   
   terms <- reactive({
     # Change when the "update" button is pressed...
@@ -143,15 +187,21 @@ shinyServer(function(input, output) {
     #crude <- tm_map(crude, removePunctuation)
     #crude <- tm_map(crude, function(x)removeWords(x,stopwords()))
     #wordcloud(crude)
-    display_wordcloud(get_twitter(input$product))
+    #display_wordcloud(get_twitter(input$product))
+    display_wordcloud(twitterDat())
   })
   
   output$twitterHistogram <- renderPlot({
-    plot_histogram(get_twitter(input$product))
+    #plot_histogram(get_twitter(input$product))
+    plot_histogram(twitterDat())
   })
  
   output$BestBuyboxplot <- renderPlot({
     BestBuy_boxplot(input$product)
+  })
+  
+  output$NYT_histogram <- renderPlot({
+    NYT_histogram(get_NYTdata(input$product))
   })
 })
 

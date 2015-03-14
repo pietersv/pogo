@@ -13,7 +13,8 @@ shinyUI(
       sidebarPanel(
         textInput("product", "Product text"),
         hr(),
-        helpText("Enter the text that Pogo should analyze.")
+        helpText("Enter the text that Pogo should analyze."),
+        submitButton("Update View")
       ),
       
       # Create a spot for the barplot
@@ -21,9 +22,14 @@ shinyUI(
         h4("Product Stem"),
         verbatimTextOutput("summary"),
         # Show Word Cloud
+        h4("Twitter Word Cloud"),
         plotOutput("plot"), 
+        h4("Twitter Histogram"),
         plotOutput("twitterHistogram"), 
-        plotOutput("BestBuyboxplot") 
+        h4("BestBuy Boxplot"),
+        plotOutput("BestBuyboxplot"),
+        h4("NYT sentiment histogram"),
+        plotOutput("NYT_histogram")
       )     
     )
   )
