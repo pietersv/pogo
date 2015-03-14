@@ -46,7 +46,7 @@ for(i in 1:nReviews) {
 }
 
 #aggregate(reviews$reviews$sentiment, by=list(reviews$reviews$rating), FUN=mean)[2]
-boxplot(sentiment ~ rating, data= reviews$reviews, xlab = "rating", ylab = "sentiment")
+boxplot(sentiment ~ rating, data= reviews$reviews, xlab = "rating", ylab = "sentiment", main="Great state")
 
 
 
