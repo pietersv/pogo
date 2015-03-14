@@ -1,3 +1,5 @@
+
+library(indicoio)
 library(jsonlite)
 
 ## Read secret keys from a local file 
@@ -17,9 +19,8 @@ url_products <- paste(
   "&apiKey=",BEST_BUY_API_KEY,
   sep="") 
 
-url_products
+products <- jsonlite::fromJSON(url_products)   
 
-products <- fromJSON(url_products)   
 #products$products$sku
 
 url_reviews <- paste(
@@ -33,5 +34,23 @@ url_reviews <- paste(
   "&page=","1",
   sep="")
 
-reviews <- fromJSON(url_reviews)
+reviews <- jsonlite::fromJSON(url_reviews)
+
+print (length(names(reviews)))
+
+nReviews <- nrow(reviews$reviews)
+reviews$reviews$sentiment <- NA
+#sentiments <- rep(NA, nReviews)
+for(i in 1:nReviews) {
+  reviews$reviews$sentiment[i] <- sentiment(reviews$reviews$comment[i])
+}
+
+#aggregate(reviews$reviews$sentiment, by=list(reviews$reviews$rating), FUN=mean)[2]
+boxplot(sentiment ~ rating, data= reviews$reviews, xlab = "rating", ylab = "sentiment", main="Great state")
+
+
+
+
+
+
 

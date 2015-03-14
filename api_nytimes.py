@@ -1,9 +1,11 @@
+from nytimesarticle import articleAPI
 import requests
 import lxml.html as lh
 import re
-import sys
+import sys 
+import csv
 
-def searchTopic(argv):
+def searchTopic(topic):
 	f = open('secret', 'r')
 	for line in f:
 		if line.find('NYTIMES_ARTICLE') != -1:
@@ -35,19 +37,19 @@ def searchTopic(argv):
 	for count, art in enumerate(articles_content):
 		regex = re.compile('[^a-zA-Z]')
 		articles_content[count] = regex.sub(' ', art)
-	#with open('%s data.csv' % topic, 'wb') as output_file:
-		#wr = csv.writer(output_file, quoting=csv.QUOTE_ALL)
-		#wr.writerow(articles_content)
-	#print articles_content
-	return articles_content
+	with open('%s data.csv' % topic, 'wb') as output_file:
+		wr = csv.writer(output_file, quoting=csv.QUOTE_ALL)
+		wr.writerow(articles_content)
+	print articles_content
+
 
 
 
 
 
 if __name__ == '__main__':
-	searchTopic('Apple Watch')
 	str_input = ''
 	for x in range(len(sys.argv) - 1):
 		str_input = str_input + sys.argv[x + 1] + ' '
-	searchTopic(str_input)
+	searchTopic(sys.argv[1:])
+
