@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
   })
   
   output$summary <- renderPrint({
-    paste("Input stem is: ", input$product, sep = "; ")
+    paste("Input stem is: ", input$product, sep = " ")
   })
   
   output$plot <- renderPlot({
