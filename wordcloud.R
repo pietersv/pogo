@@ -1,8 +1,8 @@
-library(twitteR)
-library("wordcloud")
-library("tm")
-library(SnowballC)
 
+
+# define a function for Twitter Search
+
+get_twitter<-function(input_str) {
 ## Read secret keys from a local file
 myProp <- read.table(secretLoc,header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
 TWITTER_API_KEY <- myProp["TWITTER_API_KEY",1]
@@ -14,9 +14,16 @@ TWITTER_ACCESS_SECRET <- myProp["TWITTER_ACCESS_SECRET",1]
 setup_twitter_oauth(TWITTER_API_KEY,TWITTER_API_SECRET,TWITTER_ACCESS_TOKEN,TWITTER_ACCESS_SECRET)
 
 ## Search Twitter
-r_stats <- searchTwitter("#bigdata", n=100, lang="en")
+r_stats <- searchTwitter(input_str, n=100, lang="en")
+return(r_stats)
+}
 
-r_stats_text <- sapply(r_stats, function(x) x$getText())
+# define a function that takes get_twitter and compute sentiment scores
+get_sentiments<-function(get_twitter)
+
+# define a function to display wordcloud
+display_wordcloud<-function(get_twitter) {
+r_stats_text <- sapply(get_twitter, function(x) x$getText())
 r_stats_text_corpus <- Corpus(VectorSource(r_stats_text))
 tdm <- TermDocumentMatrix(r_stats_text_corpus)
 m <- as.matrix(tdm)
@@ -33,3 +40,5 @@ inds <- inds[which(!(inds %in% grep("@", d$word)))]
 
 ## Display Wordcloud
 wordcloud(d[inds, "word"], d[inds,"freq"])
+
+}

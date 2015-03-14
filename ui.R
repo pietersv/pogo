@@ -22,7 +22,8 @@ shinyUI(
         verbatimTextOutput("summary"),
         # Show Word Cloud
         plotOutput("plot"), 
-        plotOutput("twitterFreqPlot")  
+        plotOutput("twitterFreqPlot"), 
+        plotOutput("twitterHistogram") 
       )     
     )
   )
