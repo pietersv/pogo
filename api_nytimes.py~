@@ -16,7 +16,7 @@ def searchTopic(topic):
 	headline = topic
 	sources = ['Reuters', 'AP', 'The New York Times']
 	beg_date = 20140101
-	pages = 4
+	pages = 2
 
 
 	articles_content = []
