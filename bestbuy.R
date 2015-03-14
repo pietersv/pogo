@@ -1,5 +1,5 @@
 
-myProp <- read.table("~/Exp/pogo/secret", header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
+myProp <- read.table(secretLoc,header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
 
 BEST_BUY_API_KEY <- myProp["BEST_BUY_API_KEY",1]
 BEST_BUY_API_APPLICATION <- myProp["BEST_BUY_API_APPLICATION",1]
