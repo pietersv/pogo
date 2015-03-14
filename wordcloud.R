@@ -1,32 +1,35 @@
 library(twitteR)
-library(wordcloud)
-library(tm)
+library("wordcloud")
+library("tm")
 library(SnowballC)
 
-api_key <- "GO2w8H7fsU6prfRIc6vG49aec"
+## Read secret keys from a local file
+myProp <- read.table(secretLoc,header=FALSE, sep="=", row.names=1, strip.white=TRUE, na.strings="NA", stringsAsFactors=FALSE)
+TWITTER_API_KEY <- myProp["TWITTER_API_KEY",1]
+TWITTER_API_SECRET <- myProp["TWITTER_API_SECRET",1]
+TWITTER_ACCESS_TOKEN <- myProp["TWITTER_ACCESS_TOKEN",1]
+TWITTER_ACCESS_SECRET <- myProp["TWITTER_ACCESS_SECRET",1]
 
-api_secret <- "PLB969zdMsPll3lzUpBG8UIC6a99JXrSqxUP8fWJ8lUgjvzThV"
+## Authenticate with Twitter
+setup_twitter_oauth(TWITTER_API_KEY,TWITTER_API_SECRET,TWITTER_ACCESS_TOKEN,TWITTER_ACCESS_SECRET)
 
-access_token <- "3091565165-1LOxNVORx75ZnfgyZNUdq7OIzsHzo8OLZ8QaP5q"
-
-access_token_secret <- "iOlmQoEJti1I5KiFH9MGDCt5mnJrClzEsEBZSdCcMPpvs"
-
-setup_twitter_oauth(api_key,api_secret,access_token,access_token_secret)
-
-r_stats <- searchTwitter("#iphone" && "watch", n=1500, lang="en")
+## Search Twitter
+r_stats <- searchTwitter("#bigdata", n=100, lang="en")
 
 r_stats_text <- sapply(r_stats, function(x) x$getText())
-#create corpus
 r_stats_text_corpus <- Corpus(VectorSource(r_stats_text))
+tdm <- TermDocumentMatrix(r_stats_text_corpus)
+m <- as.matrix(tdm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
 
-#clean up
-r_stats_text_corpus <- tm_map(r_stats_text_corpus, stripWhitespace, lazy=TRUE)
-r_stats_text_corpus <- tm_map(r_stats_text_corpus, content_transformer(tolower), lazy=TRUE)
-r_stats_text_corpus <- tm_map(r_stats_text_corpus, removePunctuation, lazy=TRUE)
-r_stats_text_corpus <- tm_map(r_stats_text_corpus, function(x)removeWords(x,stopwords()), lazy=TRUE)
-r_stats_text_corpus <- tm_map(r_stats_text_corpus, stemDocument, lazy=TRUE)
+#filter common words
+skipWords <- c("and", "the", "for", "are", "but", "or", "nor", "yet", "so",
+               "if", "a", "an", "from", "want", "how")
+inds <- 1:200
+inds <- which(!(inds %in% which(d$word %in% skipWords)))
+#filter usernames
+inds <- inds[which(!(inds %in% grep("@", d$word)))]
 
-setwd("D:/new")
-
-wordcloud(r_stats_text_corpus, max.words=50)
-
+## Display Wordcloud
+wordcloud(d[inds, "word"], d[inds,"freq"])
