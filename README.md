@@ -2,7 +2,9 @@
 MIT Hackathon project correlating social media discussion with consumer behavior.
 
 # Overview
-Pogo is a simple project to explore the relationship between consumer sentiment about products, as expressed in the natural language text of product reviews, Twitter feeds and NYTimes articles with the explicit product ratings on Best Buy.  This is a team project for the MIT Hackathon at the hack/reduce space in Cambridge, MA in March 2015.
+Pogo is a simple project to explore the relationship between consumer sentiment about products, as expressed in the natural language text of product reviews, Twitter feeds and NYTimes articles with the explicit product ratings on Best Buy.  This is a team project for the MIT Hackathon at the Hack/Reduce space in Cambridge, MA in March 2015.  
+
+Subgoals were to play with the APIs  available by the sponsors (Indico.io, Knowledgent, Basis, Tamr), tap interesting public datasets, and integregate diverse tools of interest to the team, including R, Shiny and Python and make these work together.
 
 # Data sources
 
@@ -51,9 +53,13 @@ Twitter sentiment is displayed as a histogam of sentiment value vs word frequenc
 
 * Shiny and Python integrate well on local development machines, but require advanced configuration such as buildbacks when deploying to cloud based servers.
 
+# Site
+The project is generously hosted by Indico.io at http://162.222.183.133/.   
+
 # Installation and setup
 
 * Clone the repo, `git clone https://github.com/pietersv/pogo`
+* Sign up for Developer access at the following sites 
 * Create a file called `secret` in the `/pogo` directory with these entries:
 ```
 BEST_BUY_API_APPLICATION=pogo 
@@ -68,7 +74,8 @@ TWITTER_ACCESS_SECRET=
 * Launch R Studio and in the console:
   - define a variable in R `secretLoc <- "Users/you/projects/pogo/secret"~/`
   - define a variable with the directory `shinyLoc <- "Users/you/projects/pogo"`
-  - start the Shiny server `runApp(shinyLoc, launch.browser=TRUE)`
+  - start the Shiny server `runApp(shinyLoc, launch.browser=TRUE)` (to deploy set `host=0.0.0.0, port=80`)
+  - replace various stray hard coded paths, grep for /Users
 
 
 
