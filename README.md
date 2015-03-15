@@ -29,7 +29,7 @@ For a specific product search term, e.g. "iPhone" Pogo:
 * Searches NYTimes Articles API for news articles matching the search term
 
 # Results
-Below is a screen image of one Pogo visualizations, showing the mean sentiment score of the text comments written by customers (e.g. "The  is everything that was promised to Apple customers. I suggest this phone to upgraders and everyone else!"), versus the numerical product rating on Best Buy (e.g. "5" stars):
+Below is a screen image of one Pogo visualizations, showing the mean sentiment score of the text comments written by customers (e.g. "The  is everything that was promised to Apple customers. I suggest this phone to upgraders and everyone else!"), versus the numerical product rating on Best Buy (e.g. "5" stars).   This graph shows a strong correlation between the numerical rating and the sentiment score of the review text, spanning the entire 0.0 to 1.0 scale. Of course, you'd expect more positive words with more positive reviews, the striking thing was how well the sentiment API scores reflected our intuitive sense of the sentiments when reading the words:
 <a href="http://tinypic.com?ref=2889zl" target="_blank"><img src="http://i61.tinypic.com/2889zl.png" border="0" width="80%" alt="Image and video hosting by TinyPic" ></a>
 
 
