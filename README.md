@@ -36,7 +36,7 @@ Below is a screen image of one Pogo visualizations, showing the mean sentiment s
 For each product, Pogo also produces World Clouds of the text in the Best Buy product reviews and NY Times articles:
 <a href="http://tinypic.com?ref=6yf8z5" target="_blank"><img src="http://i59.tinypic.com/6yf8z5.png" border="0" width="70%" alt="Image and video hosting by TinyPic"></a>
 
-Twitter sentiment is displayed as a histogam of sentiment value vs word frequency:
+Twitter sentiment is displayed as a histogam of sentiment value vs word frequency. This graph below shows that for PlayStation,  tweets referencing #playstation were most commonly  skewed toward the positive sentiment, although there is a wide distribution of sentiment for individual tweets.
 <a href="http://tinypic.com?ref=260y52e" target="_blank"><img src="http://i62.tinypic.com/260y52e.png" border="0" width="70%" alt="Image and video hosting by TinyPic"></a>
 
 # Findings
