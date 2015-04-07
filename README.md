@@ -53,8 +53,6 @@ Twitter sentiment is displayed as a histogam of sentiment value vs word frequenc
 
 * Shiny and Python integrate well on local development machines, but require advanced configuration such as buildbacks when deploying to cloud based servers.
 
-# Site
-The project is generously hosted by Indico.io at http://162.222.183.133/.   
 
 # Installation and setup
 
